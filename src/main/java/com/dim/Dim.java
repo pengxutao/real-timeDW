@@ -3,6 +3,7 @@ package com.dim;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bean.TableProcess;
+import com.func.DimSinkFunction;
 import com.func.TableProcessFunction;
 import com.utils.MyKafkaUtil;
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
@@ -37,7 +38,7 @@ public class Dim {
 
         //TODO 2.读取 Kafka topic_db 主题数据创建主流
         String topic = "topic_db";
-        String groupId = "dim_app_211126";
+        String groupId = "dim";
         DataStreamSource<String> kafkaDS = env.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
 
         //TODO 3.过滤掉非JSON数据&保留新增、变化以及初始化数据并将数据转换为JSON格式

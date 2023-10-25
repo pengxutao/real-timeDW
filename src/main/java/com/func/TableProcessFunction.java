@@ -33,7 +33,9 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
         connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
     }
 
-    //value:{"before":null,"after":{"source_table":"aa","sink_table":"bb","sink_columns":"cc","sink_pk":"id","sink_extend":"xxx"},"source":{"version":"1.5.4.Final","connector":"mysql","name":"mysql_binlog_source","ts_ms":1652513039549,"snapshot":"false","db":"gmall-211126-config","sequence":null,"table":"table_process","server_id":0,"gtid":null,"file":"","pos":0,"row":0,"thread":null,"query":null},"op":"r","ts_ms":1652513039551,"transaction":null}
+    //value:{"before":null,"after":{"source_table":"aa","sink_table":"bb","sink_columns":"cc","sink_pk":"id","sink_extend":"xxx"},
+    // "source":{"version":"1.5.4.Final","connector":"mysql","name":"mysql_binlog_source","ts_ms":1652513039549,"snapshot":"false","db":"gmall_config","sequence":null,"table":"table_process","server_id":0,"gtid":null,"file":"","pos":0,"row":0,"thread":null,"query":null},
+    // "op":"r","ts_ms":1652513039551,"transaction":null}
     @Override
     public void processBroadcastElement(String value, Context ctx, Collector<JSONObject> out) throws Exception {
 
@@ -101,7 +103,7 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
             createTableSql.append(")").append(sinkExtend);
 
             //编译SQL
-            System.out.println("建表语句为：" + createTableSql);
+            //System.out.println("建表语句为：" + createTableSql);
             preparedStatement = connection.prepareStatement(createTableSql.toString());
 
             //执行SQL,建表
@@ -122,8 +124,8 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
         }
     }
 
-    //value:{"database":"gmall-211126-flink","table":"base_trademark","type":"update","ts":1652499176,"xid":188,"commit":true,"data":{"id":13,"tm_name":"atguigu","logo_url":"/bbb/bbb"},"old":{"logo_url":"/aaa/aaa"}}
-    //value:{"database":"gmall-211126-flink","table":"order_info","type":"update","ts":1652499176,"xid":188,"commit":true,"data":{"id":13,...},"old":{"xxx":"/aaa/aaa"}}
+    //value:{"database":"gmall","table":"base_trademark","type":"update","ts":1652499176,"xid":188,"commit":true,"data":{"id":13,"tm_name":"atguigu","logo_url":"/bbb/bbb"},"old":{"logo_url":"/aaa/aaa"}}
+    //value:{"database":"gmall","table":"order_info","type":"update","ts":1652499176,"xid":188,"commit":true,"data":{"id":13,...},"old":{"xxx":"/aaa/aaa"}}
     @Override
     public void processElement(JSONObject value, ReadOnlyContext ctx, Collector<JSONObject> out) throws Exception {
 
